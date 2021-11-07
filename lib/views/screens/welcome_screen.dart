@@ -1,9 +1,9 @@
 import 'package:dummy_task/views/custom_widget/custom_button.dart';
 import 'package:dummy_task/views/custom_widget/custom_text_field.dart';
 import 'package:dummy_task/views/screens/home_screen.dart';
-import 'package:dummy_task/views/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../constants.dart';
 
@@ -46,7 +46,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         showLoading = false;
       });
 
-      if (authCredential?.user != null) {
+      if (authCredential.user != null) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -181,11 +181,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               buttonColor: primaryColor,
               buttonText: "Continue With Email",
               textColor: Colors.white,
-              onPress: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginScreen()));
+              onPress: ()  {
+                handleLogin();
               }),
         ),
         const Spacer(
@@ -273,5 +270,37 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         padding: const EdgeInsets.all(16),
       ),
     ));
+  }
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+  void handleLogin() async {
+    final UserCredential user = await signInWithGoogle();
+    // Here signInWithGoogle() is your defined function!
+    if(user != null){
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(
+            initialChangeIndex: 0,
+          ),
+        ),
+      );
+    }else{
+      // Something Wrong!
+    }
   }
 }

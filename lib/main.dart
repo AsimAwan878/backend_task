@@ -1,4 +1,3 @@
-
 import 'package:dummy_task/views/screens/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -16,12 +15,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarBrightness: Brightness.light,
       statusBarIconBrightness: Brightness.light,
       //Status BAr
       systemNavigationBarIconBrightness:
-      Brightness.light, //Bottom of Screen Button
+          Brightness.light, //Bottom of Screen Button
     ));
     return const MaterialApp(
       debugShowCheckedModeBanner: false,

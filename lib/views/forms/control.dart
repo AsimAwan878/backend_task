@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 class Controls extends StatelessWidget {
-  ///
-  const Controls();
+  const Controls({Key? key}) : super(key: key);
+
 
   Widget get _space => const SizedBox(height: 10);
 
